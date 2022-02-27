@@ -15,20 +15,28 @@ public class JpaMain {
         tx.begin();
 
         try {
-            //code
-            Member member = new Member();
-            member.setId(1L);
-            member.setName("hello");
-            em.persist(member);
+            Member member1 = new Member("A");
+            Member member2 = new Member("B");
+            Member member3 = new Member("C");
+
+            System.out.println("=================");
+
+            em.persist(member1);
+            em.persist(member2);
+            em.persist(member3);
+
+            System.out.println("=================");
 
             tx.commit();
         }
         catch (Exception e) {
+            e.printStackTrace();
             tx.rollback();
         }
         finally {
             em.close();
-            emf.close();
         }
+
+        emf.close();
     }
 }

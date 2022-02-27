@@ -1,15 +1,28 @@
 package hellojpa;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
+@SequenceGenerator(name = "member_seq_generator",
+        sequenceName = "member_sequence",
+        initialValue = 1, allocationSize = 50)
 public class Member {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_sequence")
     private Long id;
 
     @Column
     private String name;
+
+    public Member() {
+    }
+
+    public Member(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
