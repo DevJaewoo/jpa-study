@@ -15,15 +15,28 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member1 = new Member("A");
-            Member member2 = new Member("B");
-            Member member3 = new Member("C");
+            System.out.println("=================");
+
+            Team team = new Team();
+            team.setName("TEAM1");
+            em.persist(team);
 
             System.out.println("=================");
 
+            Member member1 = new Member();
+            member1.setName("A");
+            member1.setTeam(team);
             em.persist(member1);
-            em.persist(member2);
-            em.persist(member3);
+
+            em.flush();
+            em.clear();
+
+            System.out.println("=================");
+
+            Member findMember = em.find(Member.class, member1.getId());
+            Team findTeam = findMember.getTeam();
+
+            System.out.println("findTeam = " + findTeam.getName());
 
             System.out.println("=================");
 

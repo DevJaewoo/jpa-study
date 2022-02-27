@@ -1,25 +1,18 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @SequenceGenerator(name = "member_seq_generator",
         sequenceName = "member_sequence",
         initialValue = 1, allocationSize = 50)
-public class Member {
+public class Team {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_sequence")
+    @Column(name = "TEAM_ID")
     private Long id;
 
-    @Column
     private String name;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
 
     public Long getId() {
         return id;
@@ -35,13 +28,5 @@ public class Member {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
     }
 }
