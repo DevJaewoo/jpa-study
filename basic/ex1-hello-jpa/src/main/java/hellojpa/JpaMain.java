@@ -18,21 +18,26 @@ public class JpaMain {
         try {
             System.out.println("=================");
 
-            Movie movie = new Movie();
-            movie.setDirector("director");
-            movie.setActor("actor");
-            movie.setName("name");
-            movie.setPrice(100);
+            Team team = new Team();
+            team.setName("Team1");
+            em.persist(team);
 
-            em.persist(movie);
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeam(team);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
             System.out.println("=================");
 
-            Movie findMovie = em.find(Movie.class, movie.getId());
-            System.out.println("findMovie = " + findMovie.getName());
+            Member findMember = em.find(Member.class, member.getId());
+            System.out.println(emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam()));
+
+            System.out.println("=================");
+
+            System.out.println("team = " + findMember.getTeam().getName());
 
             System.out.println("=================");
 
