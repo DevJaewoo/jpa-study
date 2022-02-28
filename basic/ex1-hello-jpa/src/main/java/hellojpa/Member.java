@@ -2,7 +2,9 @@ package hellojpa;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @SequenceGenerator(name = "member_seq_generator",
@@ -34,6 +36,15 @@ public class Member {
             @AttributeOverride(name = "zipcode", column = @Column(name = "WORK_ZIPCODE")),
     })
     private Address workAddress;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<MemberProduct> memberProducts = new ArrayList<>();
@@ -93,5 +104,21 @@ public class Member {
     public void addMemberProduct(MemberProduct memberProduct) {
         memberProducts.add(memberProduct);
         memberProduct.setMember(this);
+    }
+
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public void setFavoriteFoods(Set<String> faviroteFoods) {
+        this.favoriteFoods = faviroteFoods;
+    }
+
+    public List<Address> getAddressHistory() {
+        return addressHistory;
+    }
+
+    public void setAddressHistory(List<Address> addressHistory) {
+        this.addressHistory = addressHistory;
     }
 }
