@@ -18,28 +18,29 @@ public class JpaMain {
         try {
             System.out.println("=================");
 
-            Team team = new Team();
-            team.setName("Team1");
-            em.persist(team);
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            Member member = new Member();
-            member.setName("member1");
-            member.setTeam(team);
-            em.persist(member);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+//            em.persist(child1);
+//            em.persist(child2);
+
+            System.out.println("=================");
+
+            child1.setName("1");
+            child2.setName("2");
 
             em.flush();
             em.clear();
 
             System.out.println("=================");
 
-            Member findMember = em.find(Member.class, member.getId());
-            System.out.println(emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam()));
-
-            System.out.println("=================");
-
-            System.out.println("team = " + findMember.getTeam().getName());
-
-            System.out.println("=================");
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(1);
 
             tx.commit();
         }
