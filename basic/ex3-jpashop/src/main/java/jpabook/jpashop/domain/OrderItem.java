@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @SequenceGenerator(name = "jpashop_seq_generator", sequenceName = "orderitem_seq")
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderitem_seq")
     private Long id;

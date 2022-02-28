@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @SequenceGenerator(name = "jpashop_seq_generator", sequenceName = "category_seq")
-public class Category {
+public class Category extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq")
     private Long id;

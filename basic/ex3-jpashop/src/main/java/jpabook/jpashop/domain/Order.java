@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ORDERS")
 @SequenceGenerator(name = "jpashop_seq_generator", sequenceName = "order_seq")
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
