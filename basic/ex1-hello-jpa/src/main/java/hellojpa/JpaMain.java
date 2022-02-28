@@ -18,28 +18,21 @@ public class JpaMain {
         try {
             System.out.println("=================");
 
-            Member member1 = new Member();
-            member1.setName("A");
+            Movie movie = new Movie();
+            movie.setDirector("director");
+            movie.setActor("actor");
+            movie.setName("name");
+            movie.setPrice(100);
 
-            Member member2 = new Member();
-            member2.setName("B");
+            em.persist(movie);
 
-            Member member3 = new Member();
-            member3.setName("C");
-
-            em.persist(member1);
-            em.persist(member2);
-            em.persist(member3);
+            em.flush();
+            em.clear();
 
             System.out.println("=================");
 
-            Team team = new Team();
-            team.setName("TEAM1");
-            team.getMembers().add(member1);
-            team.getMembers().add(member2);
-            team.getMembers().add(member3);
-
-            em.persist(team);
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie.getName());
 
             System.out.println("=================");
 
