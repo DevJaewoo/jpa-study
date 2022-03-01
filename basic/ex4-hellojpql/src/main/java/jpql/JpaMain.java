@@ -53,24 +53,13 @@ public class JpaMain {
 
             System.out.println("===========================");
 
-//            String query = "select m, t from Member m join m.team t";
-//            em.createQuery(query).getResultList();
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "member1")
+                    .getResultList();
 
-//            String query = "select m from Member m join fetch m.team";
-//            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
-//            for (Member member : resultList) {
-//                System.out.println("member = " + member.getUsername() + ", " + member.getTeam().getName());
-//            }
-
-            String query = "select distinct t from Team t join fetch t.members";
-            List<Team> resultList = em.createQuery(query, Team.class).getResultList();
-            for (Team team : resultList) {
-                System.out.println("team = " + team.getName() + " size = " + team.getMembers().size());
-                for (Member member : team.getMembers()) {
-                    System.out.println("member = " + member);
-                }
+            for (Member member : resultList) {
+                System.out.println("member = " + member);
             }
-            System.out.println(resultList.get(0) == resultList.get(1));
 
             System.out.println("===========================");
             em.getTransaction().commit();
