@@ -31,7 +31,7 @@ public class JpaMain {
 
             System.out.println("===========================");
 
-            List<Member> resultList = em.createQuery("select m from Member m join Team t on m.username = 'member1'", Member.class)
+            List<Member> resultList = em.createQuery("select m from Member m join m.team where m.username = ANY (select mm.username from Member mm where mm.age = 10)", Member.class)
                     .setFirstResult(0)
                     .setMaxResults(10)
                     .getResultList();
