@@ -30,21 +30,25 @@ public class JpaMain {
 
             Member member1 = new Member();
             member1.setUsername("member1");
+            member1.setAge(10);
             member1.setTeam(teamA);
             em.persist(member1);
 
             Member member2 = new Member();
             member2.setUsername("member2");
+            member2.setAge(11);
             member2.setTeam(teamA);
             em.persist(member2);
 
             Member member3 = new Member();
             member3.setUsername("member3");
+            member3.setAge(12);
             member3.setTeam(teamB);
             em.persist(member3);
 
             Member member4 = new Member();
             member4.setUsername("member4");
+            member4.setAge(13);
             member4.setTeam(null);
             em.persist(member4);
 
@@ -53,9 +57,10 @@ public class JpaMain {
 
             System.out.println("===========================");
 
-            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("username", "member1")
-                    .getResultList();
+            int result = em.createQuery("update Member m set m.age = m.age + 100").executeUpdate();
+            System.out.println("result = " + result);
+
+            List<Member> resultList = em.createQuery("select m from Member m", Member.class).getResultList();
 
             for (Member member : resultList) {
                 System.out.println("member = " + member);
