@@ -23,6 +23,7 @@ public class JpaMain {
             Member member = new Member();
             member.setUsername("member1");
             member.setAge(10);
+            member.setMemberType(MemberType.ADMIN);
             member.changeTeam(team);
             em.persist(member);
 
@@ -31,17 +32,17 @@ public class JpaMain {
 
             System.out.println("===========================");
 
-            List<Member> resultList = em.createQuery("select m from Member m join m.team where m.username = ANY (select mm.username from Member mm where mm.age = 10)", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
+            List<Object[]> resultList = em.createQuery("select m.username, 'HELLO', TRUE, m.memberType from Member m where m.memberType = :adminType")
+                    .setParameter("adminType", MemberType.ADMIN)
                     .getResultList();
 
             System.out.println("resultList.size() = " + resultList.size());
 
-            for (Member resultMember : resultList) {
-                System.out.println("resultMember.getTeam().getClass() = " + resultMember.getTeam().getClass());
-                System.out.println("resultMember = " + resultMember);
-                System.out.println("resultMember.getTeam().getName() = " + resultMember.getTeam().getName());
+            for (Object[] objects : resultList) {
+                System.out.println("objects[0] = " + objects[0]);
+                System.out.println("objects[1] = " + objects[1]);
+                System.out.println("objects[2] = " + objects[2]);
+                System.out.println("objects[3] = " + objects[3]);
             }
 
             System.out.println("===========================");
