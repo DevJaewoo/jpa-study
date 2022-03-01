@@ -16,30 +16,23 @@ public class JpaMain {
         try {
             System.out.println("===========================");
 
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setAge(10);
-
-            em.persist(member);
-
-            Order order = new Order();
-            order.setMember(member);
-            order.setAddress(new Address("city", "street", "zipcode"));
-
-            em.persist(order);
+            for(int i=0; i<100; i++) {
+                Member member = new Member();
+                member.setUsername("member" + i);
+                member.setAge(i);
+                em.persist(member);
+            }
 
             System.out.println("===========================");
 
-            Member result = em.createQuery("select m from Member as m where m.username = :username", Member.class)
-                    .setParameter("username", "member1")
-                    .getSingleResult();
-            System.out.println("result.getUsername() = " + result.getUsername());
+            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(1)
+                    .setMaxResults(10)
+                    .getResultList();
 
-            Address result2 = em.createQuery("select o.address from Order as o", Address.class).getSingleResult();
-            System.out.println("result2.getCity() = " + result2.getCity());
-
-            MemberDTO result3 = em.createQuery("select new jpql.MemberDTO(m.username, m.age) from Member m", MemberDTO.class).getSingleResult();
-            System.out.println("result3.getUsername() = " + result3.getUsername());
+            for (Member resultMember : resultList) {
+                System.out.println("resultMember = " + resultMember);
+            }
 
             System.out.println("===========================");
             em.getTransaction().commit();
