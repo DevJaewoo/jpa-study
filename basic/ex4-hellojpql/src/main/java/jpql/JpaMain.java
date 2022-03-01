@@ -16,22 +16,32 @@ public class JpaMain {
         try {
             System.out.println("===========================");
 
-            for(int i=0; i<100; i++) {
-                Member member = new Member();
-                member.setUsername("member" + i);
-                member.setAge(i);
-                em.persist(member);
-            }
+            Team team = new Team();
+            team.setName("Team1");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setAge(10);
+            member.changeTeam(team);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
 
             System.out.println("===========================");
 
-            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
-                    .setFirstResult(1)
+            List<Member> resultList = em.createQuery("select m from Member m join Team t on m.username = 'member1'", Member.class)
+                    .setFirstResult(0)
                     .setMaxResults(10)
                     .getResultList();
 
+            System.out.println("resultList.size() = " + resultList.size());
+
             for (Member resultMember : resultList) {
+                System.out.println("resultMember.getTeam().getClass() = " + resultMember.getTeam().getClass());
                 System.out.println("resultMember = " + resultMember);
+                System.out.println("resultMember.getTeam().getName() = " + resultMember.getTeam().getName());
             }
 
             System.out.println("===========================");
