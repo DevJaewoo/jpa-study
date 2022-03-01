@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class JpaMain {
@@ -20,39 +21,17 @@ public class JpaMain {
             System.out.println("=================");
 
             Member member = new Member();
-            member.setName("member");
-            member.setHomeAddress(new Address("city", "street", "zipcode"));
-
-//            member.getFavoriteFoods().add("치킨");
-//            member.getFavoriteFoods().add("피자");
-//            member.getFavoriteFoods().add("족발");
-
-            member.getAddressHistory().add(new AddressEntity("old1", "street", "zipcode"));
-            member.getAddressHistory().add(new AddressEntity("old2", "street", "zipcode"));
+            member.setName("WowHelloJPA");
 
             em.persist(member);
-            
-            em.flush();
-            em.clear();
-            
+
+//            em.flush();
+//            em.clear();
+
             System.out.println("=================");
 
-            Member findMember = em.find(Member.class, member.getId());
-
-//            Address homeAddress = findMember.getHomeAddress();
-//            findMember.setHomeAddress(new Address("newCity", homeAddress.getStreet(), homeAddress.getZipcode()));
-
-//            findMember.getFavoriteFoods().remove("치킨");
-//            findMember.getFavoriteFoods().add("과자");
-
-            List<AddressEntity> addressHistory = findMember.getAddressHistory();
-//            Address address = addressHistory.stream().filter(addr -> addr.getCity().equals("old1")).findAny().get();
-//
-//            addressHistory.remove(address);
-//            addressHistory.add(new Address("new1", address.getStreet(), address.getZipcode()));
-
-            addressHistory.remove(new AddressEntity("old1", "street", "zipcode"));
-            addressHistory.add(new AddressEntity("new1", "street", "zipcode"));
+            Member findMember = em.createQuery("select m from Member m where m.name like '%Hello%'", Member.class).getResultStream().findAny().orElse(null);
+            System.out.println("findMember.getName() = " + findMember.getName());
 
             tx.commit();
         }
