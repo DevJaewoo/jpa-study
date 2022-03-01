@@ -4,6 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,18 +23,13 @@ public class JpaMain {
         try {
             System.out.println("=================");
 
-            Member member = new Member();
-            member.setName("WowHelloJPA");
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
 
-            em.persist(member);
+            Root<Member> m = query.from(Member.class);
 
-//            em.flush();
-//            em.clear();
-
-            System.out.println("=================");
-
-            Member findMember = em.createQuery("select m from Member m where m.name like '%Hello%'", Member.class).getResultStream().findAny().orElse(null);
-            System.out.println("findMember.getName() = " + findMember.getName());
+            CriteriaQuery<Member> cq = query.select(m).where(cb.like(m.get("name"), "Hello"));
+            List<Member> resultList = em.createQuery(cq).getResultList();
 
             tx.commit();
         }
